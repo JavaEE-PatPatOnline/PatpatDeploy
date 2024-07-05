@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pat-boot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pat-boot
+  template:
+    metadata:
+      labels:
+        app: pat-boot
+    spec:
+      hostNetwork: true
+      containers:
+        - name: pat-boot
+          image: pat-boot:{VERSION}
+          envFrom:
+            - configMapRef:
+                name: pat-config
+          volumeMounts:
+            - name: judge-volume
+              mountPath: /judge
+            - name: log-volume
+              mountPath: /log
+            - name: bucket-volume
+              mountPath: /bucket
+      volumes:
+        - name: log-volume
+          hostPath:
+            path: /home/tonix/dev/patpat/volume/log
+            type: Directory
+        - name: judge-volume
+          hostPath:
+            path: /home/tonix/dev/patpat/volume/judge
+            type: Directory
+        - name: bucket-volume
+          hostPath:
+            path: /home/tonix/dev/patpat/volume/bucket
+            type: Directory
