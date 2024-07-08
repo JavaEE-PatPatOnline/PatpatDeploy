@@ -82,7 +82,7 @@ elif [ "$1" == "log" ]; then
         echo "Usage: $0 log [--clear|boot|judge]"
     fi
 elif [ "$1" == "deploy" ]; then
-    ./manage.sh env apply
+    ./manage.sh env --apply
     if [ "$2" == "-a" ] || [ "$2" == "--all" ]; then
         ./deploy.sh boot
         ./deploy.sh judge
@@ -90,6 +90,22 @@ elif [ "$1" == "deploy" ]; then
         ./deploy.sh boot
     elif [ "$2" == "judge" ]; then
         ./deploy.sh judge
+    else
+        echo "Usage: $0 deploy [-a|--all|boot|judge]"
+    fi
+elif [ "$1" == "reload" ]; then
+    ./manage.sh env --apply
+    if [ "$2" == "-a" ] || [ "$2" == "--all" ]; then
+        ./manage.sh boot --delete
+        ./manage.sh judge --delete
+        ./manage.sh boot --apply
+        ./manage.sh judge --apply
+    elif [ "$2" == "boot" ]; then
+        ./manage.sh boot --delete
+        ./manage.sh boot --apply
+    elif [ "$2" == "judge" ]; then
+        ./manage.sh judge --delete
+        ./manage.sh judge --apply
     else
         echo "Usage: $0 deploy [-a|--all|boot|judge]"
     fi
@@ -104,4 +120,5 @@ else
     echo "  watch    --  watch deployment, pod, or service"
     echo "  log      --  manage log files"
     echo "  deploy   --  deploy applications"
+    echo "  reload   --  reload applications"
 fi
