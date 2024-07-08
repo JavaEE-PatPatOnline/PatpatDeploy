@@ -1,3 +1,7 @@
 # Public files
 
+*
 !.gitignore
+!default.svg
+!boy.svg
+!girl.svg

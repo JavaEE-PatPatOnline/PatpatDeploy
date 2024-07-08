@@ -24,8 +24,10 @@ spec:
               mountPath: /judge
             - name: log-volume
               mountPath: /log
-            - name: bucket-volume
+            - name: private-bucket-volume
               mountPath: /bucket
+            - name: public-bucket-volume
+              mountPath: /wwwroot
       volumes:
         - name: log-volume
           hostPath:
@@ -35,7 +37,11 @@ spec:
           hostPath:
             path: /home/tonix/dev/patpat/volume/judge
             type: Directory
-        - name: bucket-volume
+        - name: private-bucket-volume
           hostPath:
             path: /home/tonix/dev/patpat/volume/bucket
+            type: Directory
+        - name: public-bucket-volume
+          hostPath:
+            path: /home/tonix/dev/patpat/volume/wwwroot
             type: Directory
