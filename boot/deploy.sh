@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd ..
-./deploy.sh boot
+./deploy.sh boot $@

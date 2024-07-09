@@ -100,3 +100,10 @@ echo "[INFO] Updated version to $max_version" | tee -a deploy.log
 echo $max_version > version
 
 echo "" | tee -a deploy.log
+
+# push
+if [ "$2" == "--push" ]; then
+    echo "[INFO] Pushing $target" | tee -a deploy.log
+    cd ..
+    ./push.sh $target
+fi

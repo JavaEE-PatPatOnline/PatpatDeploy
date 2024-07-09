@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd ..
-./deploy.sh judge
+./deploy.sh judge $@

@@ -109,6 +109,28 @@ elif [ "$1" == "reload" ]; then
     else
         echo "Usage: $0 deploy [-a|--all|boot|judge]"
     fi
+elif [ "$1" == "push" ]; then
+    if [ "$2" == "-a" ] || [ "$2" == "--all" ]; then
+        ./push.sh boot
+        ./push.sh judge
+    elif [ "$2" == "boot" ]; then
+        ./push.sh boot
+    elif [ "$2" == "judge" ]; then
+        ./push.sh judge
+    else
+        echo "Usage: $0 push [-a|--all|boot|judge]"
+    fi
+elif [ "$1" == "pull" ]; then
+    if [ "$2" == "-a" ] || [ "$2" == "--all" ]; then
+        ./push.sh boot --pull
+        ./push.sh judge --pull
+    elif [ "$2" == "boot" ]; then
+        ./push.sh boot --pull
+    elif [ "$2" == "judge" ]; then
+        ./push.sh judge --pull
+    else
+        echo "Usage: $0 pull [-a|--all|boot|judge]"
+    fi
 else
     echo "Usage: $0 verb [options]"
     echo "  nginx    --  reload nginx configuration"
@@ -121,4 +143,6 @@ else
     echo "  log      --  manage log files"
     echo "  deploy   --  deploy applications"
     echo "  reload   --  reload applications"
+    echo "  push     --  push applications"
+    echo "  pull     --  pull applications"
 fi
