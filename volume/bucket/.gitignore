@@ -1,3 +1,5 @@
 # Private bucket
 
+*
+!problem/
 !.gitignore
