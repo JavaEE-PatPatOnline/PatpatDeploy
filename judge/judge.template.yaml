@@ -20,11 +20,17 @@ spec:
             - configMapRef:
                 name: pat-config
           volumeMounts:
+            - name: problem-volume
+              mountPath: /problem
             - name: judge-volume
               mountPath: /judge
             - name: log-volume
               mountPath: /log
       volumes:
+        - name: problem-volume
+          hostPath:
+            path: /home/tonix/dev/patpat/volume/bucket/problem
+            type: Directory
         - name: log-volume
           hostPath:
             path: /home/tonix/dev/patpat/volume/log
