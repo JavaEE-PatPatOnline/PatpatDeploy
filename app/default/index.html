@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patpat Online</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: linear-gradient(215deg, #fbc2eb, #a6c1ee);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.8);
+        }
+
+        h1 em {
+            color: orange;
+        }
+
+        h1 i {
+            color: cornflowerblue
+        }
+
+        .status {
+            font-weight: bold;
+            color: green;
+        }
+
+        .status.error {
+            color: red
+        }
+
+        .box {
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .result {
+            font-weight: bold;
+            color: deeppink;
+        }
+
+        .submit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-flow: column-reverse;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            transition: .3s;
+            cursor: pointer;
+        }
+
+        .submit button:hover {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to <em>Patpat</em> <i>Online</i>!</h1>
+    <div class="box">
+        <p>Server status: <span id="status" class="status">Unknown</span></p>
+    </div>
+    <div class="box hidden submit">
+        <div>
+            <button id="btn">Submit</button>
+        </div>
+        <div>
+            <p>Result of task <span id="task" class="result">...</span> is <span id="result" class="result">...</span>
+            </p>
+        </div>
+    </div>
+    <div class="box login">
+        <form action="javascript:login()">
+            <input id="username" type="text" name="username" placeholder="Username">
+            <input id="password" type="password" name="password" placeholder="Password">
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+
+<script>
+    const api = "";
+    const health = `${api}/actuator/health`;
+    const submit = `${api}/api/judge/submit/`;
+    const ws = `${api}/api/stream/websocket`;
+
+    var userId;
+
+    // Fetch health status
+    fetch(health).then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error("Network response was not ok.");
+    }).then(data => {
+        const status = document.getElementById("status");
+        status.textContent = "Up";
+        document.getElementsByClassName("box")[1].classList.remove("hidden");
+    }).catch(error => {
+        const status = document.getElementById("status");
+        status.textContent = "Down";
+        status.classList.add("error");
+        console.error("There has been a problem with your fetch operation:", error);
+    });
+
+    function login() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        // post
+        fetch(`${api}/api/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                buaaId: username,
+                password: password
+            })
+        }).then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error("Network response was not ok.");
+        }).then(data => {
+            alert("Login success!");
+            afterLogin();
+            userId = data.data.buaaId;
+        }).catch(error => {
+            alert("Login failed!");
+            console.error("There has been a problem with your fetch operation:", error);
+        });
+    }
+
+    function afterLogin() {
+        // get websocket url
+        fetch(ws).then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error("Network response was not ok.");
+        }).then(data => {
+            connectWebSocket(data.data);
+        }).catch(error => {
+            console.error("There has been a problem with your fetch operation:", error);
+        });
+
+        const btn = document.getElementById("btn");
+        btn.onclick = () => {
+            for (var elem of document.getElementsByClassName("result")) {
+                elem.textContent = "...";
+            }
+
+            // post
+            fetch(submit + userId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error("Network response was not ok.");
+            }).then(data => {
+                const task = document.getElementById("task");
+                task.textContent = data.data.taskId;
+            }).catch(error => {
+                console.error("There has been a problem with your fetch operation:", error);
+            });
+        };
+    }
+    function connectWebSocket(url) {
+        // Create WebSocket connection.
+        const socket = new WebSocket(url);
+
+        // Connection opened
+        socket.addEventListener("open", (event) => {
+        });
+
+        // Listen for messages
+        socket.addEventListener("message", (event) => {
+            const data = JSON.parse(event.data);
+
+            if (data.type === "judge") {
+                document.getElementById("task").textContent = data.data.taskId;
+                document.getElementById("result").textContent = data.data.result;
+            }
+        });
+    }
+</script>
+
+</html>

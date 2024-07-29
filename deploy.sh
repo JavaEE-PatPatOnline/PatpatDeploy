@@ -55,15 +55,14 @@ else
     echo "[WARNING] Version $max_version is not greater than $last_version" | tee -a deploy.log
 fi
 
-# Clear assets/ and copy the new file
-echo "[INFO] Initializing assets" | tee -a deploy.log
-rm -rf assets/
-mkdir assets/
-cp "target/$max_file" -t assets/
-
 # Build docker
-echo "[INFO] Building docker" | tee -a deploy.log
-echo "docker build -t pat-$target:$max_version --build-arg VERSION=$max_version ."
+if [ ! -f Dockerfile ]; then
+    echo "[ERROR] Dockerfile not found" | tee -a deploy.log
+    exit 1
+fi
+profile=${PROFILE:-"prod"}
+echo "[INFO] Building docker with profile '$profile'" | tee -a deploy.log
+echo "docker build -t pat-$target:$max_version --build-arg VERSION=$max_version PROFILE=$profile ."
 docker build -t pat-$target:$max_version --build-arg VERSION=$max_version .
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to build docker" | tee -a deploy.log

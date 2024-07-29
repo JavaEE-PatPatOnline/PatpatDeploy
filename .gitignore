@@ -1,10 +1,1 @@
-assets/
-target/
-version
-*.log
-*.yaml
-!*.template.yaml
-!service.yaml
 env.yaml
-app/
-dist/
