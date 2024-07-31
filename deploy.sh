@@ -60,9 +60,8 @@ if [ ! -f Dockerfile ]; then
     echo "[ERROR] Dockerfile not found" | tee -a deploy.log
     exit 1
 fi
-profile=${PROFILE:-"prod"}
-echo "[INFO] Building docker with profile '$profile'" | tee -a deploy.log
-echo "docker build -t pat-$target:$max_version --build-arg VERSION=$max_version PROFILE=$profile ."
+echo "[INFO] Building docker" | tee -a deploy.log
+echo "docker build -t pat-$target:$max_version --build-arg VERSION=$max_version ."
 docker build -t pat-$target:$max_version --build-arg VERSION=$max_version .
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to build docker" | tee -a deploy.log

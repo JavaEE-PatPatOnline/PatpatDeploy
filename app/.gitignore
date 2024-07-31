@@ -1,2 +1,4 @@
-dist/
-patpat/
+*
+!.gitignore
+!deploy.sh
+!default/
