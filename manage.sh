@@ -73,7 +73,7 @@ elif [ "$1" == "watch" ]; then
     fi
 elif [ "$1" == "log" ]; then
     if [ "$2" == "--clear" ]; then
-        rm -rf volume/log/*.log
+        sudo rm -rf volume/log/*.log volume/log/boot volume/log/judge
     elif [ "$2" == "boot" ]; then
         watch tail -20 volume/log/boot.log
     elif [ "$2" == "judge" ]; then

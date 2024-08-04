@@ -29,10 +29,7 @@ max_version=0
 max_file=""
 for file in $files; do
     version=`echo $file | grep -oE "[0-9]+\.[0-9]+\.[0-9]+"`
-    if [ -z $version ]; then
-        continue
-    fi
-    if [ $version \> $max_version ]; then
+    if [ "$version" \> "$max_version" ]; then
         max_version=$version
         max_file=$file
     fi
