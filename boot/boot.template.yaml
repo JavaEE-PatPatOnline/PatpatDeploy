@@ -20,8 +20,6 @@ spec:
             - configMapRef:
                 name: pat-config
           volumeMounts:
-            - name: judge-volume
-              mountPath: /judge
             - name: log-volume
               mountPath: /log
             - name: private-bucket-volume
@@ -32,10 +30,6 @@ spec:
         - name: log-volume
           hostPath:
             path: /home/tonix/dev/patpat/volume/log
-            type: Directory
-        - name: judge-volume
-          hostPath:
-            path: /home/tonix/dev/patpat/volume/judge
             type: Directory
         - name: private-bucket-volume
           hostPath:

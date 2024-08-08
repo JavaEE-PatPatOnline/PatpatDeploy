@@ -22,11 +22,15 @@ spec:
           volumeMounts:
             - name: problem-volume
               mountPath: /problem
-            - name: judge-volume
-              mountPath: /judge
+            - name: submission-volume
+              mountPath: /submission
             - name: log-volume
               mountPath: /log
       volumes:
+        - name: submission-volume
+          hostPath:
+            path: /home/tonix/dev/patpat/volume/bucket/submission
+            type: Directory
         - name: problem-volume
           hostPath:
             path: /home/tonix/dev/patpat/volume/bucket/problem
@@ -34,8 +38,4 @@ spec:
         - name: log-volume
           hostPath:
             path: /home/tonix/dev/patpat/volume/log
-            type: Directory
-        - name: judge-volume
-          hostPath:
-            path: /home/tonix/dev/patpat/volume/judge
             type: Directory
