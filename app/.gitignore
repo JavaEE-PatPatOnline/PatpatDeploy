@@ -1,4 +1,3 @@
-*
-!.gitignore
-!deploy.sh
-!default/
+patpat/
+tutorial/
+*.log
