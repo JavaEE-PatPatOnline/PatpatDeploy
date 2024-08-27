@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patpat Online</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: linear-gradient(215deg, #fbc2eb, #a6c1ee);
+            cursor: default;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+        }
+
+        h1 em {
+            color: orange;
+        }
+
+        h1 i {
+            color: cornflowerblue
+        }
+
+        .status {
+            font-weight: bold;
+            color: green;
+        }
+
+        .status.error {
+            color: red
+        }
+
+        .box {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to <em>Patpat</em> <i>Online</i>!</h1>
+    <div class="box">
+        <p>Server status: <span id="status" class="status">Unknown</span></p>
+    </div>
+</body>
+
+<script>
+    const api = "";
+    const health = `${api}/actuator/health`;
+
+    // Fetch health status
+    fetch(health).then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error("Network response was not ok.");
+    }).then(data => {
+        const status = document.getElementById("status");
+        status.textContent = "Up";
+    }).catch(error => {
+        const status = document.getElementById("status");
+        status.textContent = "Down";
+        status.classList.add("error");
+        console.error("There has been a problem with your fetch operation:", error);
+    });
+
+    document.querySelector("h1").addEventListener("click", () => {
+        window.location.href = "/";
+    });
+</script>
+
+</html>
