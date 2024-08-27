@@ -80,6 +80,11 @@ if cmp -s $target.yaml $target.yaml.old; then
 fi
 rm $target.yaml.old
 
+# Apply env.yaml
+echo "[INFO] Applying env.yaml" | tee -a deploy.log
+echo sudo kubectl apply -f env.yaml | tee -a deploy.log
+sudo kubectl apply -f env.yaml
+
 # Apply $target.yaml as new deployment
 echo "[INFO] Applying $target.yaml" | tee -a deploy.log
 echo sudo kubectl apply -f $target.yaml | tee -a deploy.log

@@ -82,7 +82,6 @@ elif [ "$1" == "log" ]; then
         echo "Usage: $0 log [--clear|boot|judge]"
     fi
 elif [ "$1" == "deploy" ]; then
-    ./manage.sh env --apply
     if [ "$2" == "-a" ] || [ "$2" == "--all" ]; then
         ./deploy.sh boot
         ./deploy.sh judge
@@ -143,6 +142,6 @@ else
     echo "  log      --  manage log files"
     echo "  deploy   --  deploy applications"
     echo "  reload   --  reload applications"
-    echo "  push     --  push applications"
-    echo "  pull     --  pull applications"
+    echo "  push     --  push image to registry"
+    echo "  pull     --  pull image from registry"
 fi
