@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-external
+spec:
+  type: ExternalName
+  externalName: {private ip}
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbit-external
+spec:
+  type: ExternalName
+  externalName: {private ip}
+  ports:
+  - port: 5672
+    targetPort: 5672
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: boot-service
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      nodePort: 30080
+      protocol: TCP
+      name: pat-boot
+  selector:
+    app: pat-boot
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: judge-service
+spec:
+  type: NodePort
+  ports:
+    - port: 8081
+      targetPort: 30081
+      protocol: TCP
+      name: pat-judge
+  selector:
+    app: pat-judge
