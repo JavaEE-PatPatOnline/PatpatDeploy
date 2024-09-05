@@ -69,7 +69,10 @@ fi
 echo "[INFO] Constructing new $target.yaml" | tee -a deploy.log
 touch $target.yaml
 mv $target.yaml $target.yaml.old
-cat $target.template.yaml | sed "s/{VERSION}/$max_version/g" > $target.yaml
+base_dir=$(dirname $(dirname $(pwd)))
+echo "[INFO] Base directory: $base_dir" | tee -a deploy.log
+# we have / in variable base_dir, so we need to use | as delimiter
+cat $target.template.yaml | sed "s/{VERSION}/$max_version/g" | sed "s|{BASE}|$base_dir|g" > $target.yaml
 
 # Reload if $target.yaml is different from $target.yaml.old
 if cmp -s $target.yaml $target.yaml.old; then
