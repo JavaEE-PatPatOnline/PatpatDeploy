@@ -58,8 +58,8 @@ if [ ! -f Dockerfile ]; then
     exit 1
 fi
 echo "[INFO] Building docker" | tee -a deploy.log
-echo "docker build -t pat-$target:$max_version --build-arg VERSION=$max_version ."
-docker build -t pat-$target:$max_version --build-arg VERSION=$max_version .
+echo "sudo docker build -t pat-$target:$max_version --build-arg VERSION=$max_version ."
+sudo docker build -t pat-$target:$max_version --build-arg VERSION=$max_version .
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to build docker" | tee -a deploy.log
     exit 1

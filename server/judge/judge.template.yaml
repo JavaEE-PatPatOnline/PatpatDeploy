@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pat-judge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pat-judge
+  template:
+    metadata:
+      labels:
+        app: pat-judge
+    spec:
+      containers:
+        - name: pat-judge
+          image: pat-judge:{VERSION}
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: pat-config
+          volumeMounts:
+            - name: problem-volume
+              mountPath: /problem
+            - name: submission-volume
+              mountPath: /submission
+            - name: log-volume
+              mountPath: /log
+      volumes:
+        - name: submission-volume
+          hostPath:
+            path: {BASE}/volume/bucket/submission
+            type: Directory
+        - name: problem-volume
+          hostPath:
+            path: {BASE}/volume/bucket/problem
+            type: Directory
+        - name: log-volume
+          hostPath:
+            path: {BASE}/volume/log
+            type: Directory

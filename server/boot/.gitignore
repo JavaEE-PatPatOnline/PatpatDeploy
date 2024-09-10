@@ -1,4 +1,4 @@
 *
 !.gitignore
 !deploy.sh
-!.template.yaml
+!*.template.yaml
