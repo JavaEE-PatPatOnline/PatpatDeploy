@@ -409,11 +409,12 @@ hr {
   }
 }
 
-.tile.tile-2048 .tile-inner {
+.tile.tile-2048 .tile-inner,
+.tile.tile-Java .tile-inner {
   color: #f9f6f2;
   background: #edc22e;
   box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.5555555556), inset 0 0 0 1px rgba(255, 255, 255, 0.3333333333);
-  font-size: 35px;
+  font-size: 40px;
 }
 
 @media screen and (max-width: 520px) {
@@ -746,7 +747,7 @@ hr {
 }
 
 .sidebar {
-  width: 40%;
+  width: 50%;
   margin-top: 50px;
   margin-left: 30px;
   text-align: center;
@@ -757,4 +758,8 @@ hr {
 
 .sidebar .game-explanation {
   margin-top: 200px;
+}
+
+.restart-button {
+  font-size: 20px;
 }

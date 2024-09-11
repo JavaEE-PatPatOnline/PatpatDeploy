@@ -63,7 +63,7 @@ HTMLActuator.prototype.addTile = function (tile) {
 
   inner.classList.add("tile-inner");
   if (tile.value == 2048) {
-    tile.value = "Java";
+    inner.textContent = "Java"
   } else {
     inner.textContent = tile.value;
   }
